@@ -5,6 +5,8 @@
   "version": "0.0.1",
   "author": "Nicolai Parlog <nicolai@nipafx.dev>",
   "dependencies": {
+    "echarts": "^5.0.2",
+    "echarts-for-react": "^3.0.1",
     "gatsby": "^3.1.2",
     "gatsby-plugin-gatsby-cloud": "^2.1.0",
     "gatsby-plugin-image": "^1.1.2",
