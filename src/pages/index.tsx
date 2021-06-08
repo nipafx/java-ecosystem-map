@@ -1,31 +1,17 @@
 import * as React from "react"
 import { graphql } from "gatsby"
 
-import ReactEChartsCore from "echarts-for-react/lib/core"
-import * as echarts from "echarts/core"
-import { GraphChart } from "echarts/charts"
-import { CanvasRenderer } from "echarts/renderers"
+import { Edge, Graph, Node } from "../types"
 
 import Layout from "../components/layout"
-import SEO from "../components/seo"
+import Map from "../components/map"
 
 const IndexPage = ({ data }) => {
 	const graph = createGraph(data)
-	const graphOptions = {
-		series: [
-			{
-				type: `graph`,
-				layout: `circular`,
-				...graph
-			},
-		],
-	}
-	echarts.use([GraphChart, CanvasRenderer])
 
 	return (
 		<Layout>
-			<SEO title="Home" />
-			<ReactEChartsCore echarts={echarts} option={graphOptions} />
+			<Map graph={graph} />
 		</Layout>
 	)
 }
@@ -55,26 +41,6 @@ const createGraph = (data: any): Graph => {
 	return { nodes, edges }
 }
 
-interface Graph {
-	nodes: Node[]
-	edges: Edge[]
-}
-
-interface Node {
-	id: String
-	name: String
-	parentId?: String
-	parent?: Node
-	html: String
-}
-
-interface Edge {
-	source: String
-	target: String
-}
-
-export default IndexPage
-
 export const query = graphql`
 	query {
 		graph: allMarkdownRemark {
@@ -93,3 +59,5 @@ export const query = graphql`
 		}
 	}
 `
+
+export default IndexPage
