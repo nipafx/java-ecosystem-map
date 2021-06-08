@@ -1,7 +1,10 @@
 import * as React from "react"
 
-import "./layout.css"
+import "../global.css"
 import { Link } from "gatsby"
+
+const layout = require("../container.module.css")
+const style = require("./layout.module.css")
 
 interface LayoutProperties {
 	children: any
@@ -9,52 +12,21 @@ interface LayoutProperties {
 
 const Layout = ({ children }: LayoutProperties) => {
 	return (
-		<>
-			<header
-				style={{
-					background: `rebeccapurple`,
-					marginBottom: `1.45rem`,
-				}}
-			>
-				<div
-					style={{
-						margin: `0 auto`,
-						maxWidth: 960,
-						padding: `1.45rem 1.0875rem`,
-					}}
-				>
-					<h1 style={{ margin: 0 }}>
-						<Link
-							to="/"
-							style={{
-								color: `white`,
-								textDecoration: `none`,
-							}}
-						>
-							{"Java Ecosystem Map"}
-						</Link>
-					</h1>
-				</div>
+		<div className={style.site}>
+			<header className={layout.container}>
+				<h1>Java Ecosystem Map</h1>
 			</header>
-			<div
-				style={{
-					margin: `0 auto`,
-					maxWidth: 960,
-					padding: `0 1.0875rem 1.45rem`,
-				}}
-			>
-				<main>{children}</main>
-				<footer
-					style={{
-						marginTop: `2rem`,
-					}}
-				>
-					© {new Date().getFullYear()}, Built with
-					{` `}
+			<main className={layout.container}>{children}</main>
+			<footer className={layout.container}>
+				<span>
+					<a href="https://creativecommons.org/licenses/by-nc/4.0/legalcode">CC BY-NC 4.0</a>
+					{' // Built by '}
+					<a href="https://nipafx.dev">Nicolai Parlog</a>
+					{' with '}
 					<a href="https://www.gatsbyjs.com">Gatsby</a>
-				</footer>
-			</div>
-		</>
+				</span>
+			</footer>
+		</div>
 	)
 }
 

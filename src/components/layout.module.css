@@ -1,0 +1,18 @@
+.site {
+	display: flex;
+	flex-direction: column;
+	min-height: 97vh;
+}
+
+header {
+	text-align: center;
+}
+
+main {
+	flex-grow: 1;
+}
+
+footer {
+	text-align: center;
+	font-size: var(--smallest);
+}
