@@ -23,6 +23,7 @@ const createGraph = (data: any): Graph => {
 			name: node.frontmatter.title as String,
 			parentId: node.frontmatter.parent as String,
 			children: [],
+			color: node.frontmatter.color,
 			html: node.html as String,
 		})
 	)
@@ -58,6 +59,7 @@ export const query = graphql`
 				frontmatter {
 					title
 					parent
+					color
 				}
 				html
 			}
