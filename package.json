@@ -1,9 +1,9 @@
 {
-  "name": "gatsby-starter-default",
-  "private": true,
-  "description": "A simple starter to get up and developing quickly with Gatsby",
-  "version": "0.1.0",
-  "author": "Kyle Mathews <mathews.kyle@gmail.com>",
+  "name": "java-ecosystem-map",
+  "private": false,
+  "description": "A visualization of core concepts of the Java ecosystem",
+  "version": "0.0.1",
+  "author": "Nicolai Parlog <nicolai@nipafx.dev>",
   "dependencies": {
     "gatsby": "^3.1.2",
     "gatsby-plugin-gatsby-cloud": "^2.1.0",
