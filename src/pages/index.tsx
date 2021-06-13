@@ -17,22 +17,23 @@ const IndexPage = ({ data }) => {
 }
 
 const createGraph = (data: any): Graph => {
-	let nodes: Node[] = data.graph.nodes.map(
-		(node: any): Node => ({
+	const nodes: MutableNode[] = data.graph.nodes.map(
+		(node: any): MutableNode => ({
 			id: node.parent.name as String,
 			name: node.frontmatter.title as String,
 			parentId: node.frontmatter.parent as String,
+			children: [],
 			html: node.html as String,
 		})
 	)
-	nodes = nodes.map(
-		(node: Node): Node => ({
-			...node,
-			parent: node.parentId && nodes.find((n) => n.id == node.parentId),
-		})
-	)
+	nodes.forEach((node: MutableNode) => {
+		const parent: Node = node.parentId ? nodes.find((n) => n.id == node.parentId) : undefined
+		node.parent = parent
+		parent?.children.push(node)
+	})
+
 	const edges: Edge[] = nodes
-		.filter(node => node && node.parent)
+		.filter((node) => node && node.parent)
 		.map((node) => ({
 			source: node.parent.id,
 			target: node.id,
@@ -41,20 +42,24 @@ const createGraph = (data: any): Graph => {
 	return { nodes, edges }
 }
 
+interface MutableNode extends Node {
+	parent?: Node
+}
+
 export const query = graphql`
 	query {
 		graph: allMarkdownRemark {
 			nodes {
-				html
-				frontmatter {
-					title
-					parent
-				}
 				parent {
 					... on File {
 						name
 					}
 				}
+				frontmatter {
+					title
+					parent
+				}
+				html
 			}
 		}
 	}

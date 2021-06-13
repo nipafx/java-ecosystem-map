@@ -1,17 +1,19 @@
 export interface Graph {
-	nodes: Node[]
-	edges: Edge[]
+	readonly nodes: readonly Node[]
+	readonly edges: readonly Edge[]
 }
 
 export interface Node {
-	id: String
-	name: String
-	parentId?: String
-	parent?: Node
-	html: String
+	readonly id: String
+	readonly name: String
+	readonly parentId?: String
+	readonly parent?: Node
+	readonly children: Node[]
+	readonly color?: String
+	readonly html: String
 }
 
 export interface Edge {
-	source: String
-	target: String
+	readonly source: String
+	readonly target: String
 }
