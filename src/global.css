@@ -16,6 +16,7 @@ body {
 	--border: var(--border-width) solid var(--alt-color);
 
 	--distance: 8px;
+	--transition-time: 0.3s;
 
 	--largest: 36px;
 	--large: 24px;

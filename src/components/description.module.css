@@ -1,0 +1,25 @@
+.empty {
+	opacity: 0;
+}
+
+.textbox {
+	width: min(400px, 50%);
+	margin: var(--distance);
+	padding: 0 var(--distance);
+	border-radius: var(--distance);
+
+	color: var(--bg-color);
+	background-color: var(--fg-color);
+
+	/* TODO: use react animation, lodash debounce or whatever to transition out */
+	transition: opacity var(--transition-time) ease-in-out;
+}
+
+.textbox p {
+	margin: var(--distance) 0;
+}
+
+.textbox ul,
+.textbox ol {
+	margin: var(--distance) 0;
+}

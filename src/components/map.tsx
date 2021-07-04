@@ -7,7 +7,8 @@ import { CanvasRenderer } from "echarts/renderers"
 
 import { Edge, Graph, Node } from "../types"
 import { topSort } from "../infra/topSort"
-import { useMemo } from "react"
+import Description from "./description"
+import { Dispatch, SetStateAction, useCallback, useMemo, useState } from "react"
 
 const style = require("./map.module.css")
 
@@ -16,10 +17,18 @@ interface MapProperties {
 }
 
 const Map = ({ graph }: MapProperties) => {
+	const [description, setDescription] = useState<string>(null)
+
 	const options = useMemo(() => {
 		const graphFx = styleGraph(graph)
 		return createEChartsOptions(graphFx)
 	}, [graph])
+	const memoizedSetDescription = useCallback(
+		(params) => {
+			updateDescription(params, setDescription)
+		},
+		[setDescription]
+	)
 
 	echarts.use([GraphChart, CanvasRenderer])
 
@@ -32,9 +41,21 @@ const Map = ({ graph }: MapProperties) => {
 					height: "100%",
 					width: "100%",
 				}}
+				onEvents={{
+					// TODO: set description on click (for mobile devices)
+					mouseover: memoizedSetDescription,
+					mouseout: memoizedSetDescription,
+				}}
 			/>
+			<Description className={style.description} html={description} />
 		</div>
 	)
+}
+
+const updateDescription = (params: any, setDescription: SetState<string>) => {
+	if (params.dataType !== "node") return
+	if (params.event.type === "mouseover") setDescription(params.value)
+	if (params.event.type === "mouseout") setDescription(null)
 }
 
 const createEChartsOptions = (graphFx: GraphFx): any => {
@@ -169,5 +190,7 @@ interface Categories {
 	readonly categories: readonly Category[]
 	readonly indexByNodeId: any
 }
+
+interface SetState<T> extends Dispatch<SetStateAction<T>> {}
 
 export default Map

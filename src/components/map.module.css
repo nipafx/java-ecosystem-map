@@ -8,3 +8,9 @@
 	border-radius: var(--distance);
 	border: 1px solid var(--bg-color-shade-2);
 }
+
+.description {
+	position: absolute;
+	top: 0;
+	right: 0;
+}
