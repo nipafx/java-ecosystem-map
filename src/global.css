@@ -15,11 +15,15 @@ body {
 	--border-radius: 0px;
 	--border: var(--border-width) solid var(--alt-color);
 
+	--distance: 8px;
+
 	--largest: 36px;
 	--large: 24px;
 	--regular: 18px;
 	--small: 14px;
 	--smallest: 12px;
+
+	margin: 0;
 
 	background: linear-gradient(
 		175deg,

@@ -1,7 +1,7 @@
 .site {
 	display: flex;
 	flex-direction: column;
-	min-height: 97vh;
+	min-height: 100vh;
 }
 
 header {
@@ -10,9 +10,12 @@ header {
 
 main {
 	flex-grow: 1;
+	position: relative;
 }
 
 footer {
+	margin-top: var(--distance);
+	margin-bottom: var(--distance);
 	text-align: center;
 	font-size: var(--smallest);
 }

@@ -8,6 +8,8 @@ import { CanvasRenderer } from "echarts/renderers"
 import { Edge, Graph, Node } from "../types"
 import { topSort } from "../infra/topSort"
 
+const style = require("./map.module.css")
+
 interface MapProperties {
 	graph: Graph
 }
@@ -26,8 +28,15 @@ const Map = ({ graph }: MapProperties) => {
 	echarts.use([GraphChart, CanvasRenderer])
 
 	return (
-		<div>
-			<ReactEChartsCore echarts={echarts} option={graphOptions} />
+		<div className={style.container}>
+			<ReactEChartsCore
+				echarts={echarts}
+				option={graphOptions}
+				style={{
+					height: "100%",
+					width: "100%",
+				}}
+			/>
 		</div>
 	)
 }

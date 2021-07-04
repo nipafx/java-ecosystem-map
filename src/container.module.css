@@ -1,8 +1,18 @@
 .container {
-	display: grid;
-	grid-template-columns: 1fr 1200px 1fr;
+	--margin: 10px;
+	margin-left: var(--margin);
+	margin-right: var(--margin);
 }
 
-.container > * {
-	grid-column: 2;
+@media all and (min-width: 800px) {
+	.container {
+		--margin: 50px;
+	}
+}
+
+@media all and (min-width: 1500px) {
+	.container {
+		width: 1400px;
+		--margin: auto;
+	}
 }

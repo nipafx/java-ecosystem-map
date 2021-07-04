@@ -3,16 +3,16 @@ import { graphql } from "gatsby"
 
 import { Edge, Graph, Node } from "../types"
 
-import Layout from "../components/layout"
+import Site from "../components/site"
 import Map from "../components/map"
 
 const IndexPage = ({ data }) => {
 	const graph = createGraph(data)
 
 	return (
-		<Layout>
+		<Site>
 			<Map graph={graph} />
-		</Layout>
+		</Site>
 	)
 }
 
