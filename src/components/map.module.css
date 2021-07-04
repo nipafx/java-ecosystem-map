@@ -5,5 +5,6 @@
 	left: 0;
 	right: 0;
 
+	border-radius: var(--distance);
 	border: 1px solid var(--bg-color-shade-2);
 }

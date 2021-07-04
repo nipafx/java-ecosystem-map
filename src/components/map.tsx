@@ -7,6 +7,7 @@ import { CanvasRenderer } from "echarts/renderers"
 
 import { Edge, Graph, Node } from "../types"
 import { topSort } from "../infra/topSort"
+import { useMemo } from "react"
 
 const style = require("./map.module.css")
 
@@ -15,23 +16,18 @@ interface MapProperties {
 }
 
 const Map = ({ graph }: MapProperties) => {
-	const graphFx = styleGraph(graph)
-	const graphOptions = {
-		series: [
-			{
-				type: `graph`,
-				layout: `force`,
-				...graphFx,
-			},
-		],
-	}
+	const options = useMemo(() => {
+		const graphFx = styleGraph(graph)
+		return createEChartsOptions(graphFx)
+	}, [graph])
+
 	echarts.use([GraphChart, CanvasRenderer])
 
 	return (
 		<div className={style.container}>
 			<ReactEChartsCore
 				echarts={echarts}
-				option={graphOptions}
+				option={options}
 				style={{
 					height: "100%",
 					width: "100%",
@@ -41,22 +37,69 @@ const Map = ({ graph }: MapProperties) => {
 	)
 }
 
+const createEChartsOptions = (graphFx: GraphFx): any => {
+	const graphOptions = {
+		series: [
+			{
+				/*
+				 * TODO: consider other layout:
+				 *  - tree: https://echarts.apache.org/en/option.html#series-tree, https://echarts.apache.org/en/option.html#series-tree.emphasis
+				 *  - circular: https://echarts.apache.org/examples/en/editor.html?c=graph-circular-layout
+				 */
+				type: `graph`,
+				// TODO: consider configuring force - https://echarts.apache.org/examples/en/editor.html?c=graph-webkit-dep
+				layout: `force`,
+				draggable: true,
+				roam: true,
+				scaleLimit: {
+					min: 1.5,
+					max: 30,
+				},
+
+				...graphFx,
+
+				label: {
+					color: "white",
+					position: "right",
+				},
+				itemStyle: {
+					border: "none",
+				},
+				lineStyle: {
+					color: "source",
+					curveness: -0.1,
+				},
+				emphasis: {
+					focus: "adjacency",
+					itemStyle: {
+						color: "white",
+					},
+				},
+			},
+		],
+	}
+
+	return graphOptions
+}
+
 const styleGraph = (graph: Graph): GraphFx => {
 	const forwardSortedNodes: readonly Node[] = topSort(graph.nodes)
 	const backwardSortedNodes: readonly Node[] = forwardSortedNodes.slice().reverse()
 	const nodeWeights: any = computeNodeWeights(backwardSortedNodes)
-	const nodeColors: any = computeNodeColors(forwardSortedNodes)
+	const categories: Categories = computeCategories(forwardSortedNodes)
 
-	const styledNodes: StyledNode[] = graph.nodes.map((node) => ({
+	const styledNodes: NodeFx[] = graph.nodes.map((node) => ({
 		id: node.id,
 		name: node.name,
 		symbolSize: nodeWeights[node.id as keyof any] + 5,
-		itemStyle: {
-			color: nodeColors[node.id as keyof any],
+		category: categories.indexByNodeId[node.id as keyof any],
+		label: {
+			show: nodeWeights[node.id as keyof any] > 3,
 		},
+		value: node.html,
 	}))
 
-	return { nodes: styledNodes, edges: graph.edges }
+	return { nodes: styledNodes, categories: categories.categories, edges: graph.edges }
 }
 
 // `nodes` need to be topologically sorted with parents last
@@ -74,26 +117,57 @@ const computeNodeWeights = (nodes: readonly Node[]): any => {
 }
 
 // `nodes` need to be topologically sorted with parents first
-const computeNodeColors = (nodes: readonly Node[]): any => {
-	const nodeColors: any = {}
+const computeCategories = (nodes: readonly Node[]): Categories => {
+	// if neither the node nor its parent has a color, assign default category
+	const defaultCategory: Category = {
+		name: "default",
+		itemStyle: {
+			// TODO: consider decal patterns intead of colors (with a switch?)
+			color: "gray",
+		},
+	}
+	const categories: Category[] = [defaultCategory]
+	const indexByNodeId: any = {}
 	nodes.forEach((node) => {
-		// if neither the node nor its parent defines a color, leave it `undefined`
-		const nodeColor = node.color || (node.parent && nodeColors[node.parent.id as keyof any])
-		nodeColors[node.id as keyof any] = nodeColor
+		if (node.color) {
+			const category: Category = {
+				name: node.name,
+				itemStyle: {
+					color: node.color,
+				},
+			}
+			categories.push(category)
+			indexByNodeId[node.id as keyof any] = categories.length - 1
+		} else if (node.parent) {
+			indexByNodeId[node.id as keyof any] = indexByNodeId[node.parent.id as keyof any]
+		} else {
+			indexByNodeId[node.id as keyof any] = 0
+		}
 	})
-	return nodeColors
+	return { categories, indexByNodeId }
 }
 
 interface GraphFx {
-	nodes: readonly StyledNode[]
-	edges: readonly Edge[]
+	readonly nodes: readonly NodeFx[]
+	readonly edges: readonly Edge[]
+	readonly categories: readonly Category[]
 }
 
-interface StyledNode {
+interface NodeFx {
 	readonly id: String
 	readonly name: String
+	readonly category: number
 	readonly symbolSize: number
+}
+
+interface Category {
+	readonly name: String
 	readonly itemStyle: any
+}
+
+interface Categories {
+	readonly categories: readonly Category[]
+	readonly indexByNodeId: any
 }
 
 export default Map
