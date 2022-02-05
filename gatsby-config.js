@@ -2,7 +2,9 @@ module.exports = {
 	siteMetadata: {
 		title: `Java Ecosystem Map`,
 		description: `A visualization of core concepts of the Java ecosystem`,
-		author: `@nipafx`,
+		siteUrl: `https://javamap.dev`,
+		author: `Nicolai Parlog <nicolai@nipafx.dev>`,
+		twitter: `@nipafx`,
 	},
 	plugins: [
 		`gatsby-plugin-react-helmet`,

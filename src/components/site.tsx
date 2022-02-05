@@ -1,19 +1,25 @@
 import * as React from "react"
 
+import Meta from "./meta"
+
 import "../global.css"
 
 const layout = require("../container.module.css")
 const style = require("./site.module.css")
 
 interface LayoutProperties {
+	title: string
+	description?: string
+	slug?: string
 	children: any
 }
 
-const Site = ({ children }: LayoutProperties) => {
+const Site = ({ title, description, slug, children }: LayoutProperties) => {
 	return (
 		<div className={style.site}>
+			<Meta title={title} description={description} slug={slug} />
 			<header className={layout.container}>
-				<h1>Java Ecosystem Map</h1>
+				<h1>{title}</h1>
 			</header>
 			<main className={layout.container}>{children}</main>
 			<footer className={layout.container}>
