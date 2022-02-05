@@ -26,7 +26,7 @@
   "keywords": [
     "gatsby"
   ],
-  "license": "0BSD",
+  "license": "EPL 2.0 for code, CC-BY-NC 4.0 for texts",
   "scripts": {
     "build": "gatsby build",
     "develop": "gatsby develop",
