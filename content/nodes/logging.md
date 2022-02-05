@@ -1,5 +1,5 @@
 ---
-title: "Testing"
+title: "Logging"
 parent: concepts
 ---
 
