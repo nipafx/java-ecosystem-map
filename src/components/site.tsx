@@ -31,6 +31,10 @@ const Site = ({ title, description, slug, children }: LayoutProperties) => {
 					<a href="https://nipafx.dev">Nicolai Parlog</a>
 					{" with "}
 					<a href="https://www.gatsbyjs.com">Gatsby</a>
+					{" and "}
+					<a href="https://echarts.apache.org/en/index.html">ECharts</a>
+					{" // Contribute "}
+					<a href="https://github.com/nipafx/java-ecosystem-map">on GitHub</a>
 				</span>
 			</footer>
 		</div>
