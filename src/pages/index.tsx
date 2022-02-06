@@ -10,7 +10,7 @@ const IndexPage = ({ data }) => {
 	const graph = createGraph(data)
 
 	return (
-		<Site title="Java Ecosystem Map">
+		<Site>
 			<Map graph={graph} />
 		</Site>
 	)

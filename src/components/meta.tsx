@@ -4,7 +4,7 @@ import Helmet from "react-helmet"
 import { graphql, useStaticQuery } from "gatsby"
 
 interface MetaProperties {
-	title: string
+	title?: string
 	description?: string
 	slug?: string
 }
@@ -32,7 +32,7 @@ const Meta = ({ title, slug, description }: MetaProperties) => {
 		`
 	).site.siteMetadata
 
-	const pageTitle: string = title === site.title ? title : `${title} << ${site.title}`
+	const pageTitle: string = title ? `${title} << ${site.title}` : site.title
 	const pageDescription: string = description || site.description
 	const pageUrl: string = slug ? `${site.siteUrl}/${slug}/` : site.siteUrl
 
@@ -42,7 +42,7 @@ const Meta = ({ title, slug, description }: MetaProperties) => {
 
 	const metaNames = {
 		// Google
-		description,
+		"description": pageDescription,
 		// Twitter
 		"twitter:card": "summary",
 		"twitter:site": site.twitter,
